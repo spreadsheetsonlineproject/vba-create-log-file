@@ -9,12 +9,13 @@ Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
 Option Explicit
 
-Private Const informationLevel As Integer = 5
-Private Const debugLevel As Integer = 4
-Private Const warningLevel As Integer = 3
-Private Const errorLevel As Integer = 2
-Private Const criticalLevel As Integer = 1
-Private Const project_name_pattern As String = "^[a-zA-Z0-9_-]{4,255}$"
+Private Const DEBUG_LEVEL As Integer = 5
+Private Const INFORMATION_LEVEL As Integer = 4
+Private Const WARNING_LEVEL As Integer = 3
+Private Const ERROR_LEVEL As Integer = 2
+Private Const CRITICAL_LEVEL As Integer = 1
+
+Private Const PROJECT_NAME_PATTERN As String = "^[a-zA-Z0-9_-]{4,255}$"
 
 Private m_has_error As Boolean
 
@@ -34,7 +35,7 @@ Public Function setUplog(ByVal log_on As Boolean, _
     Dim reg_ex As Object: Set reg_ex = CreateObject("VBScript.RegExp")
     
     With reg_ex
-        .Pattern = project_name_pattern
+        .Pattern = PROJECT_NAME_PATTERN
         If Not .test(project_name) Then
             m_has_error = True
             Err.Raise _
@@ -53,11 +54,11 @@ Public Function setUplog(ByVal log_on As Boolean, _
     m_project = project_name
 
     Select Case log_level
-        Case "information": m_log_level = 5
-        Case "debug": m_log_level = 4
-        Case "warning": m_log_level = 3
-        Case "error": m_log_level = 2
-        Case "critical": m_log_level = 1
+        Case "information": m_log_level = INFORMATION_LEVEL
+        Case "debug": m_log_level = DEBUG_LEVEL
+        Case "warning": m_log_level = WARNING_LEVEL
+        Case "error": m_log_level = ERROR_LEVEL
+        Case "critical": m_log_level = CRITICAL_LEVEL
         Case Else
             m_has_error = True
             Err.Raise _
@@ -136,7 +137,7 @@ Public Sub logInformation(log_text As String)
 
     If Not isSetUp Then Exit Sub
     If Not m_log_on Then Exit Sub
-    If getLogLevel < informationLevel Then Exit Sub
+    If getLogLevel < INFORMATION_LEVEL Then Exit Sub
 
     Call writeLog("information - " & log_text)
 
@@ -146,7 +147,7 @@ Public Sub logDebug(log_text As String)
 
     If Not isSetUp Then Exit Sub
     If Not m_log_on Then Exit Sub
-    If getLogLevel < debugLevel Then Exit Sub
+    If getLogLevel < DEBUG_LEVEL Then Exit Sub
 
     Call writeLog("debug - " & log_text)
 
@@ -156,7 +157,7 @@ Public Sub logWarning(log_text As String)
 
     If Not isSetUp Then Exit Sub
     If Not m_log_on Then Exit Sub
-    If getLogLevel < warningLevel Then Exit Sub
+    If getLogLevel < WARNING_LEVEL Then Exit Sub
 
     Call writeLog("warning - " & log_text)
 
@@ -166,7 +167,7 @@ Public Sub logError(log_text As String, ByRef error As Object)
 
     If Not isSetUp Then Exit Sub
     If Not m_log_on Then Exit Sub
-    If getLogLevel < errorLevel Then Exit Sub
+    If getLogLevel < ERROR_LEVEL Then Exit Sub
 
     Call writeLog("error - " & log_text & vbNewLine & _
         "Error occured: " & vbNewLine & _
