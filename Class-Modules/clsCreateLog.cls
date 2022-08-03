@@ -71,8 +71,8 @@ Public Function setUplog(ByVal log_on As Boolean, _
     End Select
     
     m_set_up = True
-    m_file_name = "\" & m_project & "-" & Format(Now(), "mmddhhmmss") & ".log"
-    m_log_path = log_path
+    m_file_name = Application.PathSeparator & m_project & "-" & Format(Now(), "mmddhhmmss") & ".log"
+    m_log_path = IIf(Right(log_path, 1) = Application.PathSeparator, Left(log_path, Len(log_path) - 1), log_path)
     m_log_on = log_on
 
 End Function
