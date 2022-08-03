@@ -1,18 +1,10 @@
 Attribute VB_Name = "mdlWithLogException"
 Option Explicit
 
-Private Const project_name As String = "SSOP-LogWithEH"
-
-Public log As clsCreateLog
-
-Private Sub setUplog(ByVal is_log_on As Boolean, ByVal project As String)
-    Call log.setUplog(is_log_on, project, log_level:="debug")
-End Sub
-
 Public Sub mainWithLogException()
 On Error GoTo eh
 Set log = New clsCreateLog
-Call setUplog(True, project_name)
+Call mdlGlobal.setUplog(True, THIS_PROJECT_NAME)
     
 log.logInformation "mdlWithLogException.mainWithLogException running"
     
