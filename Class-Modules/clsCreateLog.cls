@@ -18,6 +18,7 @@ Private Const CRITICAL_LEVEL As Integer = 1
 Private Const PROJECT_NAME_PATTERN As String = "^[a-zA-Z0-9_-]{4,255}$"
 
 Private m_has_error As Boolean
+Private m_file_path As String
 
 Private m_log_on As Boolean
 Private m_log_file As Integer
@@ -74,21 +75,39 @@ Public Function setUplog(ByVal log_on As Boolean, _
     m_file_name = Application.PathSeparator & m_project & "-" & Format(Now(), "mmddhhmmss") & ".log"
     m_log_path = IIf(Right(log_path, 1) = Application.PathSeparator, Left(log_path, Len(log_path) - 1), log_path)
     m_log_on = log_on
+    
+    createFilePath
 
 End Function
 
+Private Sub createFilePath()
+
+    m_file_path = Dir(m_log_path, vbDirectory)
+    
+    If m_file_path <> vbNullString Then
+        m_file_path = m_log_path & m_file_name
+        Exit Sub
+    End If
+    
+    Dim path_arr As Variant
+    path_arr = Split(m_log_path, Application.PathSeparator)
+    
+    Dim lv As Integer
+    For lv = LBound(path_arr) To UBound(path_arr)
+        If Len(m_file_path) = 0 Then
+            m_file_path = path_arr(lv)
+        Else
+            m_file_path = m_file_path & Application.PathSeparator & path_arr(lv)
+        End If
+        If Dir(m_file_path, vbDirectory) = vbNullString Then MkDir m_file_path
+    Next lv
+
+End Sub
+
 Private Sub openFile()
 
-    Dim file_path As String
-    file_path = Dir(m_log_path, vbDirectory)
-
-    If file_path = vbNullString Then MkDir m_log_path
-
-    file_path = m_log_path & m_file_name
-
     m_log_file = FreeFile
-    
-    Open file_path For Append As #m_log_file
+    Open m_file_path For Append As #m_log_file
 
 End Sub
 

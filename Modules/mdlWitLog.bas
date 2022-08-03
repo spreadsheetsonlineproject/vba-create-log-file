@@ -1,18 +1,10 @@
 Attribute VB_Name = "mdlWitLog"
 Option Explicit
 
-Private Const project_name As String = "SSOP-Log"
-
-Public log As clsCreateLog
-
-Private Sub setUplog(ByVal is_log_on As Boolean, ByVal project As String)
-    Call log.setUplog(is_log_on, project, log_level:="debug")
-End Sub
-
 Public Sub mainWithLog()
 
 Set log = New clsCreateLog
-Call setUplog(True, project_name)
+Call mdlGlobal.setUplog(True, THIS_PROJECT_NAME)
 
 log.logInformation "mdlWithLog.mainWithLog running"
     
