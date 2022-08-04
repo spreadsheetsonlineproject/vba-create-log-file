@@ -4,7 +4,7 @@ Option Explicit
 Public Sub mainWithLogException()
 On Error GoTo eh
 Set log = New clsCreateLog
-Call mdlGlobal.setUplog(True, THIS_PROJECT_NAME)
+Call log.setUplog(True, mdlGlobal.THIS_PROJECT_NAME, log_level:="debug")
     
 log.logInformation "mdlWithLogException.mainWithLogException running"
     
